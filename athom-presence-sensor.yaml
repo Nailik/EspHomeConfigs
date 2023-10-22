@@ -40,15 +40,15 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-presence-sensor.yaml
+  package_import_url: github://Nailik/EspHomeConfigs/blob/main/athom-presence-sensor.yaml
 
-#light:
-#  - platform: status_led
-#    name: "Status LED"
-#    id: led
-#    pin: GPIO16
-#    disabled_by_default: true
-#    entity_category: config
+light:
+  - platform: status_led
+    name: "Status LED"
+    id: led
+    pin: GPIO16
+    disabled_by_default: true
+    entity_category: config
 
 i2c:
   sda: GPIO4
@@ -97,9 +97,9 @@ binary_sensor:
       - delayed_on: 50ms
       - delayed_off: 10s
     device_class: motion
-    on_press:
-      then:
-        - light.turn_on: led
+    #on_press:
+    #  then:
+    #    - light.turn_on: led
 
   - platform: gpio
     pin:
@@ -112,9 +112,9 @@ binary_sensor:
     filters:
       - delayed_on: 50ms
     device_class: motion
-    on_release:
-      then:
-        - light.turn_off: led
+    #on_release:
+    #   then:
+    #    - light.turn_off: led
 
 
   - platform: template
@@ -122,10 +122,10 @@ binary_sensor:
     id: occupancy
     device_class: occupancy
     lambda: |-
-      if ( id(mmwave).state or id(pir).state) {
+      if (id(mmwave).state or id(pir).state) {
         return true;
       }
-      else if (id(mmwave).state == 0) {
+      else if (id(mmwave).state == 0 and id(pir).state == 0) {
         return false;
       }
       else {
